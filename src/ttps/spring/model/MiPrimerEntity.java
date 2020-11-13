@@ -11,9 +11,8 @@ public class MiPrimerEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
-	
+	private int prueba2;
 	private String data;
-	private int prueba;
 	
 	public MiPrimerEntity() {}
 
