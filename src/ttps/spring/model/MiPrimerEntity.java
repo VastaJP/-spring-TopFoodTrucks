@@ -13,6 +13,7 @@ public class MiPrimerEntity {
 	private Long id;
 	
 	private String data;
+	private int prueba;
 	
 	public MiPrimerEntity() {}
 
