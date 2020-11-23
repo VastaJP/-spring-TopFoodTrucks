@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name= "organizadores")
 public class OrganizadorEventos extends Usuario{
@@ -12,6 +14,7 @@ public class OrganizadorEventos extends Usuario{
 	}
 	
 	@OneToMany(mappedBy = "organizador")
+	@JsonIgnore
 	private List<Evento> eventos;
 	
 	public OrganizadorEventos(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,
