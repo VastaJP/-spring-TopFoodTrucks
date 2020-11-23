@@ -46,7 +46,7 @@ public class Evento {
 	@Column(name = "telefono")
 	private String telefono;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idOrganizador")
 	private OrganizadorEventos organizador;
 	

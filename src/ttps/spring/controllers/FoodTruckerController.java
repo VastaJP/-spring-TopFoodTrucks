@@ -60,7 +60,7 @@ public class FoodTruckerController {
 	}
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody String email, @RequestBody String contrasenia){
+	public ResponseEntity<String> login(@RequestHeader String email, @RequestHeader String contrasenia){
 		if (foodTruckerDAO.ConEmail(email) != null) {
 			FoodTrucker foodTrucker = foodTruckerDAO.autenticar(email, contrasenia);
 			if (foodTrucker != null) {
@@ -68,14 +68,36 @@ public class FoodTruckerController {
 				header.set("token", foodTrucker.getIdUsuario()+"123456");
 				return new ResponseEntity<String>(header,HttpStatus.OK);
 			}
-			return new ResponseEntity<String>("Contraseña incorrecta",HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>("Contraseña incorrecta",HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<String>("Email incorrecto",HttpStatus.FORBIDDEN);
+		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
 	}
 	
-//	@GetMapping("/getFoodTrucker")
-//	public ResponseEntity<FoodTrucker> getFoodTrucker(@RequestParam int id){
-//		
-//	}
+	@GetMapping("/getFoodTrucker")
+	public ResponseEntity<FoodTrucker> getFoodTrucker(@RequestParam int id, @RequestHeader String token){
+		if (token.equals(id+"123456")) {
+			FoodTrucker foodTrucker = foodTruckerDAO.recuperar(id);
+			if (foodTrucker != null) {
+				return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.OK);
+			}
+			return new ResponseEntity<FoodTrucker>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<FoodTrucker>(HttpStatus.UNAUTHORIZED);
+	}
+	
+	@PutMapping("/updateFoodTrucker")
+	public ResponseEntity<FoodTrucker> updateFoodTrucker(@RequestParam int id, @RequestHeader String token){
+		if (token.equals(id+"123456")) {
+			FoodTrucker foodTrucker = foodTruckerDAO.recuperar(id);
+			if (foodTrucker != null) {
+				foodTrucker.setApellido("Larga");
+				foodTruckerDAO.actualizar(foodTrucker);
+				foodTrucker = foodTruckerDAO.recuperar(id);
+				return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.OK);
+			}
+			return new ResponseEntity<FoodTrucker>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<FoodTrucker>(HttpStatus.UNAUTHORIZED);
+	}
 	
 }

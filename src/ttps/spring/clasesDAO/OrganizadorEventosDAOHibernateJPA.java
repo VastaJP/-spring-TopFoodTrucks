@@ -1,5 +1,8 @@
 package ttps.spring.clasesDAO;
 
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import ttps.spring.interfacesDAO.OrganizadorEventosDAO;
@@ -12,47 +15,38 @@ public class OrganizadorEventosDAOHibernateJPA extends GenericDAOHibernateJPA<Or
 		super(OrganizadorEventos.class);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public OrganizadorEventos ConEmail(String email) {
+		String tabla = getPersistentClass().getSimpleName();
+		Query consulta =
+			this.getEntityManager().createQuery("SELECT u FROM "+tabla+" u WHERE u.email= '"+email+"'");
+		
+		OrganizadorEventos resultado = null;
+		
+		try 
+		{
+			resultado = (OrganizadorEventos)consulta.getSingleResult();
+		}
+		catch (NoResultException e) {
+			//no hace nada
+		}
+		return resultado;
+	 }
 
-//	@Override
-//	public OrganizadorEventos actualizar(OrganizadorEventos entity) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public void borrar(OrganizadorEventos entity) {
-//		// TODO Auto-generated method stub
-//
-//	}
-//
-//	@Override
-//	public OrganizadorEventos borrar(Serializable id) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public boolean existe(Serializable id) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
-//
-//	@Override
-//	public OrganizadorEventos persistir(OrganizadorEventos entity) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public OrganizadorEventos recuperar(Serializable id) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<OrganizadorEventos> recuperarTodos(String columnOrder) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	public OrganizadorEventos autenticar(String email, String contrasenia) {
+		String tabla = getPersistentClass().getSimpleName();
+		Query consulta =
+			this.getEntityManager().createQuery("SELECT u FROM "+tabla+" u WHERE u.email= '"+email+"' AND u.contrasenia= '"+contrasenia+"'");
+		OrganizadorEventos resultado = null;
+
+		try 
+		{
+			resultado = (OrganizadorEventos)consulta.getSingleResult();
+		}
+		catch (NoResultException e) {
+			//no hace nada
+		}
+		return resultado;
+	}
 
 }

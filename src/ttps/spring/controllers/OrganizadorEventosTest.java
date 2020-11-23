@@ -51,7 +51,7 @@ public class OrganizadorEventosTest extends HttpServlet {
 		String nombre = teclado.nextLine();
 		System.out.println("Apellido:");
 		String apellido = teclado.nextLine();
-		OrganizadorEventos org1 = new OrganizadorEventos(null, email, pass, nombre, apellido, null);
+		OrganizadorEventos org1 = new OrganizadorEventos();
 		
 		oeDAO.persistir(org1);
 		System.out.println("Se ha registrado un organizador satisfactoriamente. Los datos son los siguientes:");
