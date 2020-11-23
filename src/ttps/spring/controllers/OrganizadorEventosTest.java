@@ -1,4 +1,4 @@
-package testing;
+package ttps.spring.controllers;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import clasesDAO.DAOFactory;
-import clasesDAO.OrganizadorEventosDAOHibernateJPA;
-import modelo.Evento;
-import modelo.OrganizadorEventos;
+import ttps.spring.clasesDAO.DAOFactory;
+import ttps.spring.clasesDAO.OrganizadorEventosDAOHibernateJPA;
+import ttps.spring.model.Evento;
+import ttps.spring.model.OrganizadorEventos;
 
 /**
  * Servlet implementation class OrganizadorEventosTest

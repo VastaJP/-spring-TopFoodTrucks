@@ -1,29 +1,28 @@
-package testing;
+package ttps.spring.controllers;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import clasesDAO.DAOFactory;
-import clasesDAO.ImagenDAOHibernateJPA;
-import modelo.Imagen;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import ttps.spring.config.PersistenceConfig;
+import ttps.spring.interfacesDAO.OrganizadorEventosDAO;
 
 /**
- * Servlet implementation class ImagenTest
+ * Servlet implementation class TestSpringServlet
  */
-@WebServlet("/ImagenTest")
-public class ImagenTest extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class TestSpringServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ImagenTest() {
+    public TestSpringServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,12 +31,17 @@ public class ImagenTest extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		ImagenDAOHibernateJPA iDAO= (ImagenDAOHibernateJPA)DAOFactory.getImagenDAO();
-		List<Imagen> todos = iDAO.recuperarTodos("idImagen");
-		for (Imagen imagen : todos) {
-			System.out.println(imagen.getIdImagen());
-		}
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+
+		//registra una o más componentes que serán procesadas
+		ctx.register(PersistenceConfig.class);
+		//Busca clases anotadas en el paquete base pasado por parámetro
+		ctx.scan("ttps.spring.clasesDAO");
+		ctx.refresh();
+
+		OrganizadorEventosDAO orgDAO = ctx.getBean(OrganizadorEventosDAO.class);
+		response.getWriter().append("En total hay "+String.valueOf(orgDAO.recuperarTodos("email").size())+" organizadores");
+		ctx.close();
 	}
 
 	/**

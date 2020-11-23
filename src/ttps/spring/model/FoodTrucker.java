@@ -25,7 +25,7 @@ public class FoodTrucker{
 	@Column(name = "apellido")
 	private String apellido;
 
-	@OneToOne(mappedBy = "foodtrucker")
+	@OneToOne(mappedBy = "foodtrucker", optional = true)
 	private FoodTruck foodTruck;
 	
 	public FoodTrucker(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,

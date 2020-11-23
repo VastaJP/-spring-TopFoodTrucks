@@ -1,6 +1,7 @@
 package ttps.spring.clasesDAO;
 
-import java.io.Serializable;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
@@ -16,19 +17,37 @@ public class FoodTruckerDAOHibernateJPA extends GenericDAOHibernateJPA<FoodTruck
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public boolean existe(Serializable id) {
-		// TODO Auto-generated method stub
-		return false;
+	public FoodTrucker ConEmail(String email) {
+		String tabla = getPersistentClass().getSimpleName();
+		Query consulta =
+			this.getEntityManager().createQuery("SELECT u FROM "+tabla+" u WHERE u.email= '"+email+"'");
+		
+		FoodTrucker resultado = null;
+		
+		try 
+		{
+			resultado = (FoodTrucker)consulta.getSingleResult();
+		}
+		catch (NoResultException e) {
+			//no hace nada
+		}
+		return resultado;
+	 }
+
+	public FoodTrucker autenticar(String email, String contrasenia) {
+		String tabla = getPersistentClass().getSimpleName();
+		Query consulta =
+			this.getEntityManager().createQuery("SELECT u FROM "+tabla+" u WHERE u.email= '"+email+"' AND u.contrasenia= '"+contrasenia+"'");
+		FoodTrucker resultado = null;
+
+		try 
+		{
+			resultado = (FoodTrucker)consulta.getSingleResult();
+		}
+		catch (NoResultException e) {
+			//no hace nada
+		}
+		return resultado;
 	}
-
-
-	@Override
-	public FoodTrucker recuperar(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 
 }

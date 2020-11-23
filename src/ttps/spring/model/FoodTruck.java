@@ -33,8 +33,8 @@ public class FoodTruck {
 	@Column(name = "twitter", nullable = true)
 	private String twitter;
 	
-	@OneToOne(optional = false, fetch = FetchType.EAGER)
-	@JoinColumn(name = "idUsuario")
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
+	//@JoinColumn(name = "idUsuario")
 	private FoodTrucker foodtrucker;
 	
 	@OneToMany(mappedBy = "foodTruck")
