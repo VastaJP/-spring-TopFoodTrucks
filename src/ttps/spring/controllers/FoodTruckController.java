@@ -62,7 +62,6 @@ public class FoodTruckController {
 	
 	@GetMapping("/getFoodTruck")
 	public ResponseEntity<FoodTruck> getFoodTruck(@RequestParam int id){
-		//List<FoodTruck> foodtrucks = (List<FoodTruck>)foodTruckDAO.recuperarTodos("nombre");
 		FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
 		return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
 	}
