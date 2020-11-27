@@ -36,9 +36,8 @@ public class FoodTruck {
 	@Column(name = "twitter", nullable = true)
 	private String twitter;
 	
-	// optional = false LO CAMBIE PARA PROBAR
 	@JsonIgnore
-	@OneToOne(optional = true, fetch = FetchType.LAZY)
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	//@JoinColumn(name = "idUsuario")
 	private FoodTrucker foodtrucker;
 	
