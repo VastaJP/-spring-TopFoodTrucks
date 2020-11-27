@@ -76,14 +76,28 @@ public class OrganizadoresController {
 	}
 	
 	@PutMapping("/updateOrganizador")
-	public ResponseEntity<OrganizadorEventos> updateOrganizador(@RequestParam int id, @RequestHeader String token){
+	public ResponseEntity<OrganizadorEventos> updateOrganizador(@RequestParam int id, @RequestHeader String token, @RequestBody OrganizadorEventos organizadorNuevo){
 		if (token.equals(id+"123456")) {
 			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
-			//        modificar
 			if (organizador != null) {
-				organizador.setApellido("Larga");
+				organizador.setApellido(organizadorNuevo.getApellido());
+				organizador.setNombre(organizadorNuevo.getNombre());
+				organizador.setEmail(organizadorNuevo.getEmail());
+				organizador.setContrasenia(organizadorNuevo.getContrasenia());
 				organizadorDAO.actualizar(organizador);
 				organizador = organizadorDAO.recuperar(id);
+				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
+			}
+			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<OrganizadorEventos>(HttpStatus.UNAUTHORIZED);
+	}
+	
+	@GetMapping("/getOrganizador")
+	public ResponseEntity<OrganizadorEventos> getOrganizador(@RequestParam int id, @RequestHeader String token){
+		if (token.equals(id+"123456")) {
+			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
+			if (organizador != null) {
 				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
 			}
 			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);
