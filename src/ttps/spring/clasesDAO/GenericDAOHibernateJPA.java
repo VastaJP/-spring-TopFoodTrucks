@@ -63,7 +63,7 @@ public class GenericDAOHibernateJPA<T> implements GenericDAO<T>{
 	//DELETE
 	@Override
 	public void borrar(T entity) {
-		this.getEntityManager().remove(entity);
+		this.getEntityManager().remove(getEntityManager().merge(entity));
 		/*
 		EntityManager em = EMF.getEMF().createEntityManager();
 		EntityTransaction tx = null;

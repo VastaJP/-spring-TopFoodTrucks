@@ -2,15 +2,18 @@ package ttps.spring.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "foodtruckers")
 public class FoodTrucker extends Usuario{
+
+	@JsonIgnore
+	@OneToOne(mappedBy = "foodtrucker", optional = true)
+	private FoodTruck foodTruck;
 	
 	public FoodTrucker() {
 	}
-
-	@OneToOne(mappedBy = "foodtrucker", optional = true)
-	private FoodTruck foodTruck;
 	
 	public FoodTrucker(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,
 			FoodTruck foodTruck) {

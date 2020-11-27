@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "foodtrucks")
 public class FoodTruck {
@@ -33,13 +36,17 @@ public class FoodTruck {
 	@Column(name = "twitter", nullable = true)
 	private String twitter;
 	
-	@OneToOne(optional = false, fetch = FetchType.LAZY)
+	// optional = false LO CAMBIE PARA PROBAR
+	@JsonIgnore
+	@OneToOne(optional = true, fetch = FetchType.LAZY)
 	//@JoinColumn(name = "idUsuario")
 	private FoodTrucker foodtrucker;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Reserva> reservas;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Imagen> imagen;
 	

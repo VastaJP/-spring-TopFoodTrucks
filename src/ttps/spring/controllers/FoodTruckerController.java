@@ -68,7 +68,7 @@ public class FoodTruckerController {
 				header.set("token", foodTrucker.getIdUsuario()+"123456");
 				return new ResponseEntity<String>(header,HttpStatus.OK);
 			}
-			return new ResponseEntity<String>("Contraseña incorrecta",HttpStatus.FORBIDDEN);
+			return new ResponseEntity<String>("Contraseï¿½a incorrecta",HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
 	}
@@ -86,11 +86,14 @@ public class FoodTruckerController {
 	}
 	
 	@PutMapping("/updateFoodTrucker")
-	public ResponseEntity<FoodTrucker> updateFoodTrucker(@RequestParam int id, @RequestHeader String token){
+	public ResponseEntity<FoodTrucker> updateFoodTrucker(@RequestParam int id, @RequestHeader String token, @RequestBody FoodTrucker foodTruckerNuevo){
 		if (token.equals(id+"123456")) {
 			FoodTrucker foodTrucker = foodTruckerDAO.recuperar(id);
 			if (foodTrucker != null) {
-				foodTrucker.setApellido("Larga");
+				foodTrucker.setApellido(foodTruckerNuevo.getApellido());
+				foodTrucker.setNombre(foodTruckerNuevo.getNombre());
+				foodTrucker.setEmail(foodTruckerNuevo.getEmail());
+				foodTrucker.setContrasenia(foodTruckerNuevo.getContrasenia());
 				foodTruckerDAO.actualizar(foodTrucker);
 				foodTrucker = foodTruckerDAO.recuperar(id);
 				return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.OK);

@@ -11,9 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ttps.spring.config.PersistenceConfig;
@@ -68,8 +70,24 @@ public class OrganizadoresController {
 				header.set("token", organizador.getIdUsuario()+"123456");
 				return new ResponseEntity<String>(header,HttpStatus.OK);
 			}
-			return new ResponseEntity<String>("Contraseña incorrecta",HttpStatus.FORBIDDEN);
+			return new ResponseEntity<String>("Contraseï¿½a incorrecta",HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
+	}
+	
+	@PutMapping("/updateOrganizador")
+	public ResponseEntity<OrganizadorEventos> updateOrganizador(@RequestParam int id, @RequestHeader String token){
+		if (token.equals(id+"123456")) {
+			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
+			//        modificar
+			if (organizador != null) {
+				organizador.setApellido("Larga");
+				organizadorDAO.actualizar(organizador);
+				organizador = organizadorDAO.recuperar(id);
+				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
+			}
+			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<OrganizadorEventos>(HttpStatus.UNAUTHORIZED);
 	}
 }

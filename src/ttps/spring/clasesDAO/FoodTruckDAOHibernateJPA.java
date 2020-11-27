@@ -2,6 +2,9 @@ package ttps.spring.clasesDAO;
 
 import java.io.Serializable;
 
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 
 import ttps.spring.interfacesDAO.FoodTruckDAO;
@@ -25,6 +28,19 @@ public class FoodTruckDAOHibernateJPA extends GenericDAOHibernateJPA<FoodTruck> 
 	public FoodTruck recuperar(Serializable id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public FoodTruck getFoodTruck(int id) {
+		Query consulta = this.getEntityManager().createQuery(""
+				+ "SELECT ft FROM "+ getPersistentClass().getSimpleName()+" ft WHERE ft.idFoodTruck = '"+id+"'");
+		FoodTruck foodtruck = null;
+		try {
+			foodtruck = (FoodTruck)consulta.getSingleResult();
+		} catch (NoResultException e) {
+			
+		}
+		return foodtruck;
 	}
 
 
