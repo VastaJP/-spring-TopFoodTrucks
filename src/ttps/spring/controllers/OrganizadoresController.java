@@ -42,14 +42,17 @@ public class OrganizadoresController {
 	
 	
 	@GetMapping("/listAllOrganizadores")
-	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(){
-		List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
-		if (organizadores.isEmpty()) {
-			return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @RequestHeader int idUsuario){
+		if (token.contentEquals(idUsuario+"123456")) {
+			List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
+			if (organizadores.isEmpty()) {
+				return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.NO_CONTENT);
+			}
+			Hibernate.initialize(organizadores);
+			System.out.println(Hibernate.isInitialized(organizadores));
+			return new ResponseEntity<List<OrganizadorEventos>>(organizadores,HttpStatus.OK);
 		}
-		Hibernate.initialize(organizadores);
-		System.out.println(Hibernate.isInitialized(organizadores));
-		return new ResponseEntity<List<OrganizadorEventos>>(organizadores,HttpStatus.OK);
+		return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@PostMapping("/createUser")
