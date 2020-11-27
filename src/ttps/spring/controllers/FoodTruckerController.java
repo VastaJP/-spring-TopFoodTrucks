@@ -36,14 +36,17 @@ public class FoodTruckerController {
 	
 	//GET
 	@GetMapping("/listAllFoodTruckers")
-	public ResponseEntity<List<FoodTrucker>>listAllFoodTruckers(){
-		List<FoodTrucker> foodTruckers = foodTruckerDAO.recuperarTodos("email");
-		if (foodTruckers.isEmpty()) {
-			System.out.println("No existen foodTruckers");
-			return new ResponseEntity<List<FoodTrucker>>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<List<FoodTrucker>>listAllFoodTruckers(@RequestHeader String token, @RequestHeader int idUsuario){
+		if (token.equals(idUsuario+"123456")) {
+			List<FoodTrucker> foodTruckers = foodTruckerDAO.recuperarTodos("email");
+			if (foodTruckers.isEmpty()) {
+				System.out.println("No existen foodTruckers");
+				return new ResponseEntity<List<FoodTrucker>>(HttpStatus.NO_CONTENT);
+			}
+			System.out.println("En total hay "+String.valueOf(foodTruckers.size())+" foodTruckers");
+			return new ResponseEntity<List<FoodTrucker>>(foodTruckers,HttpStatus.OK);
 		}
-		System.out.println("En total hay "+String.valueOf(foodTruckers.size())+" foodTruckers");
-		return new ResponseEntity<List<FoodTrucker>>(foodTruckers,HttpStatus.OK);
+		return new ResponseEntity<List<FoodTrucker>>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	

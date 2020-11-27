@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,58 +43,67 @@ public class FoodTruckController {
 	
 	//POST
 	@PostMapping("/createFoodTruck")
-	public ResponseEntity<FoodTruck> createFoodTruck(@RequestBody FoodTruck foodtruck, @RequestParam int id){
-		
-		 FoodTrucker ft = foodtruckerDAO.recuperar(id);
-		 if (ft == null) { 
-		 	return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.CONFLICT); 
-		 }
-		 
-		 System.out.println("food trucker recuperado"); 
-		 foodtruck.setFoodtrucker(ft);
-		 
-		
-		foodTruckDAO.persistir(foodtruck);
-		System.out.println("Foodtrucker creado!");
-		
-		return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.CREATED);
-		
+	public ResponseEntity<FoodTruck> createFoodTruck(@RequestBody FoodTruck foodtruck, @RequestParam int id, @RequestHeader String token){
+		if (token.equals(id+"123456")) {
+			FoodTrucker ft = foodtruckerDAO.recuperar(id);
+			if (ft == null) { 
+				return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.CONFLICT); 
+			}
+			 
+			System.out.println("food trucker recuperado"); 
+			foodtruck.setFoodtrucker(ft);
+			 
+			foodTruckDAO.persistir(foodtruck);
+			System.out.println("Foodtrucker creado!");
+			
+			return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);	
 	}
 	
 	@GetMapping("/getFoodTruck")
-	public ResponseEntity<FoodTruck> getFoodTruck(@RequestParam int id){
-		FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
-		return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
+	public ResponseEntity<FoodTruck> getFoodTruck(@RequestParam int id, @RequestHeader String token, @RequestHeader int idUsuario){
+		if (token.equals(idUsuario+"123456")) {
+			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
+			return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
+		}
+		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);
 	}
 	
 	@PutMapping("/updateFoodTruck")
-	public ResponseEntity<FoodTruck> updateFoodTruck(@RequestParam int id, @RequestBody FoodTruck foodtrucknuevo){
-		FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
-		if (foodtruck != null) {
-			foodtruck.setDescripcion(foodtrucknuevo.getDescripcion());
-			foodtruck.setInstagram(foodtrucknuevo.getInstagram());
-			foodtruck.setNombre(foodtrucknuevo.getNombre());
-			foodtruck.setServicio(foodtrucknuevo.getServicio());
-			foodtruck.setTwitter(foodtrucknuevo.getTwitter());
-			foodtruck.setWebsite(foodtrucknuevo.getWebsite());
-			foodtruck.setWhatsapp(foodtrucknuevo.getWhatsapp());
-			foodTruckDAO.actualizar(foodtruck);
-			foodtruck = foodTruckDAO.getFoodTruck(id);
-			return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
+	public ResponseEntity<FoodTruck> updateFoodTruck(@RequestParam int id, @RequestBody FoodTruck foodtrucknuevo, @RequestHeader String token, @RequestHeader int idUsuario){
+		if (token.equals(idUsuario+"123456")) {
+			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
+			if (foodtruck != null) {
+				foodtruck.setDescripcion(foodtrucknuevo.getDescripcion());
+				foodtruck.setInstagram(foodtrucknuevo.getInstagram());
+				foodtruck.setNombre(foodtrucknuevo.getNombre());
+				foodtruck.setServicio(foodtrucknuevo.getServicio());
+				foodtruck.setTwitter(foodtrucknuevo.getTwitter());
+				foodtruck.setWebsite(foodtrucknuevo.getWebsite());
+				foodtruck.setWhatsapp(foodtrucknuevo.getWhatsapp());
+				foodTruckDAO.actualizar(foodtruck);
+				foodtruck = foodTruckDAO.getFoodTruck(id);
+				return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
+			}
+			return new ResponseEntity<FoodTruck>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<FoodTruck>(HttpStatus.NOT_FOUND);
+		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);
 		
 	}
 	
 	@DeleteMapping("/deleteFoodTruck")
-	public ResponseEntity<FoodTruck> deleteFoodTruck(@RequestParam int id){
-		FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
-		if (foodtruck == null) {
-			System.out.println("No es posible eliminar, no se encuentra foodtruck con id "+id);
-			return new ResponseEntity<FoodTruck>(HttpStatus.NOT_FOUND);
+	public ResponseEntity<FoodTruck> deleteFoodTruck(@RequestParam int id, @RequestHeader String token, @RequestHeader int idUsuario){
+		if (token.equals(idUsuario+"123456")) {
+			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
+			if (foodtruck == null) {
+				System.out.println("No es posible eliminar, no se encuentra foodtruck con id "+id);
+				return new ResponseEntity<FoodTruck>(HttpStatus.NOT_FOUND);
+			}
+			foodTruckDAO.borrar(foodtruck);
+			System.out.println("Foodtruck con id "+id+" borrado");
+			return new ResponseEntity<FoodTruck>(HttpStatus.NO_CONTENT);
 		}
-		foodTruckDAO.borrar(foodtruck);
-		System.out.println("Foodtruck con id "+id+" borrado");
-		return new ResponseEntity<FoodTruck>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);
 	}
 }
