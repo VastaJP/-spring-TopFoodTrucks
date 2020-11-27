@@ -2,6 +2,9 @@ package ttps.spring.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name= "reservas")
 public class Reserva {
@@ -13,14 +16,17 @@ public class Reserva {
 	@Column(name = "estado")
 	private String estado;
 	
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idEvento")
 	private Evento evento;
 	
+	@JsonManagedReference
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
 	private FoodTruck foodTruck;
 	
+	@JsonBackReference
 	@OneToOne(fetch = FetchType.EAGER,optional = true)
 	@JoinColumn(name = "idValoracion")
 	private Valoracion valoracion;

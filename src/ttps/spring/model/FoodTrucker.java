@@ -2,13 +2,13 @@ package ttps.spring.model;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "foodtruckers")
 public class FoodTrucker extends Usuario{
 
-	@JsonIgnore
+	@JsonManagedReference
 	@OneToOne(mappedBy = "foodtrucker", optional = true)
 	private FoodTruck foodTruck;
 	
