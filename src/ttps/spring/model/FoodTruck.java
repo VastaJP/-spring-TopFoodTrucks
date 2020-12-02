@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "foodtrucks")
@@ -36,16 +36,17 @@ public class FoodTruck {
 	@Column(name = "twitter", nullable = true)
 	private String twitter;
 	
-	@JsonIgnore
+	//Back->owner / Managed->owner
+	@JsonBackReference
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
-	//@JoinColumn(name = "idUsuario")
+	@JoinColumn(name = "foodtrucker_idUsuario")
 	private FoodTrucker foodtrucker;
 	
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Reserva> reservas;
 	
-	@JsonIgnore
+	@JsonBackReference
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Imagen> imagen;
 	

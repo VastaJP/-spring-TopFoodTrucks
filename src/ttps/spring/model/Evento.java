@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "eventos")
 public class Evento {
@@ -46,10 +49,12 @@ public class Evento {
 	@Column(name = "telefono")
 	private String telefono;
 	
+	@JsonBackReference
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "idOrganizador")
 	private OrganizadorEventos organizador;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy = "evento")
 	private List<Reserva> reservas;
 	
