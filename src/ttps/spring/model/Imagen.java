@@ -2,6 +2,7 @@ package ttps.spring.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -18,7 +19,7 @@ public class Imagen {
 	@Column(name = "path")
 	private String path;
 	
-	@JsonManagedReference
+	@JsonBackReference(value = "foodTruckI")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
 	private FoodTruck foodTruck;

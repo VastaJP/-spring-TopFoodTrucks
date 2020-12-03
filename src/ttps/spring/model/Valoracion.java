@@ -30,7 +30,7 @@ public class Valoracion {
 	@Column(name = "disenio")
 	private Integer disenio;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value = "valoracionR")
 	@OneToOne(mappedBy = "valoracion")
 	private Reserva reserva;
 	

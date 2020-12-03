@@ -36,17 +36,17 @@ public class FoodTruck {
 	@Column(name = "twitter", nullable = true)
 	private String twitter;
 	
-	//Back->owner / Managed->owner
-	@JsonBackReference
+	//Back->owner / Managed->no owner
+	@JsonBackReference(value = "foodTruckFT")
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name = "foodtrucker_idUsuario")
 	private FoodTrucker foodtrucker;
 	
-	@JsonBackReference
+	@JsonManagedReference(value = "reservasFT")
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Reserva> reservas;
 	
-	@JsonBackReference
+	@JsonManagedReference(value = "foodTruckI")
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Imagen> imagen;
 	

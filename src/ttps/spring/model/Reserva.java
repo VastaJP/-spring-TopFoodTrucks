@@ -16,17 +16,18 @@ public class Reserva {
 	@Column(name = "estado")
 	private String estado;
 	
-	@JsonBackReference
+	@JsonBackReference(value = "reservasE")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idEvento")
 	private Evento evento;
 	
-	@JsonManagedReference
+	
+	@JsonBackReference(value = "reservasFT")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
 	private FoodTruck foodTruck;
 	
-	@JsonBackReference
+	@JsonBackReference(value = "valoracionR")
 	@OneToOne(fetch = FetchType.EAGER,optional = true)
 	@JoinColumn(name = "idValoracion")
 	private Valoracion valoracion;
