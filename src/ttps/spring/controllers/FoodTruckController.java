@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,10 +43,11 @@ public class FoodTruckController {
 	}
 	
 	//POST
-	@PostMapping("/createFoodTruck")
-	public ResponseEntity<FoodTruck> createFoodTruck(@RequestBody FoodTruck foodtruck, @RequestParam int id, @RequestHeader String token){
-		if (token.equals(id+"123456")) {
-			FoodTrucker ft = foodtruckerDAO.recuperar(id);
+	//@PostMapping("/createFoodTruck")
+	@PostMapping
+	public ResponseEntity<FoodTruck> createFoodTruck(@RequestBody FoodTruck foodtruck, @RequestHeader int idUsuario, @RequestHeader String token){
+		if (token.equals(idUsuario+"123456")) {
+			FoodTrucker ft = foodtruckerDAO.recuperar(idUsuario);
 			if (ft == null) { 
 				return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.CONFLICT); 
 			}
@@ -61,8 +63,8 @@ public class FoodTruckController {
 		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);	
 	}
 	
-	@GetMapping("/getFoodTruck")
-	public ResponseEntity<FoodTruck> getFoodTruck(@RequestParam int id, @RequestHeader String token, @RequestHeader int idUsuario){
+	@GetMapping("/{id}")
+	public ResponseEntity<FoodTruck> getFoodTruck(@PathVariable("id") int id, @RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
 			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
 			return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
@@ -70,8 +72,8 @@ public class FoodTruckController {
 		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@PutMapping("/updateFoodTruck")
-	public ResponseEntity<FoodTruck> updateFoodTruck(@RequestParam int id, @RequestBody FoodTruck foodtrucknuevo, @RequestHeader String token, @RequestHeader int idUsuario){
+	@PutMapping("/{id}")
+	public ResponseEntity<FoodTruck> updateFoodTruck(@PathVariable("id") int id, @RequestBody FoodTruck foodtrucknuevo, @RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
 			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
 			if (foodtruck != null) {
@@ -92,8 +94,8 @@ public class FoodTruckController {
 		
 	}
 	
-	@DeleteMapping("/deleteFoodTruck")
-	public ResponseEntity<FoodTruck> deleteFoodTruck(@RequestParam int id, @RequestHeader String token, @RequestHeader int idUsuario){
+	@DeleteMapping("/{id}")
+	public ResponseEntity<FoodTruck> deleteFoodTruck(@PathVariable("id") int id, @RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
 			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
 			if (foodtruck == null) {
