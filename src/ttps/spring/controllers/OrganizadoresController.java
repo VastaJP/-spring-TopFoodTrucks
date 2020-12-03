@@ -10,18 +10,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ttps.spring.config.PersistenceConfig;
-import ttps.spring.interfacesDAO.FoodTruckerDAO;
 import ttps.spring.interfacesDAO.OrganizadorEventosDAO;
-import ttps.spring.model.FoodTrucker;
 import ttps.spring.model.OrganizadorEventos;
 
 @RestController
@@ -41,18 +39,22 @@ public class OrganizadoresController {
 	}
 	
 	
-	@GetMapping("/listAllOrganizadores")
-	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(){
-		List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
-		if (organizadores.isEmpty()) {
-			return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.NO_CONTENT);
+	//@GetMapping("/listAllOrganizadores")
+	@GetMapping
+	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @RequestHeader int idUsuario){
+		if (token.contentEquals(idUsuario+"123456")) {
+			List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
+			if (organizadores.isEmpty()) {
+				return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.NO_CONTENT);
+			}
+			Hibernate.initialize(organizadores);
+			System.out.println(Hibernate.isInitialized(organizadores));
+			return new ResponseEntity<List<OrganizadorEventos>>(organizadores,HttpStatus.OK);
 		}
-		Hibernate.initialize(organizadores);
-		System.out.println(Hibernate.isInitialized(organizadores));
-		return new ResponseEntity<List<OrganizadorEventos>>(organizadores,HttpStatus.OK);
+		return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@PostMapping("/createUser")
+	@PostMapping
 	public ResponseEntity<OrganizadorEventos> createUser(@RequestBody OrganizadorEventos organizador){
 		if (organizadorDAO.ConEmail(organizador.getEmail()) == null) {
 			organizadorDAO.persistir(organizador);
@@ -61,7 +63,7 @@ public class OrganizadoresController {
 		return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.CONFLICT);
 	}
 	
-	@PostMapping("/login")
+	@PostMapping("/autenticacion")
 	public ResponseEntity<String> login(@RequestHeader String email, @RequestHeader String contrasenia){
 		if (organizadorDAO.ConEmail(email) != null) {
 			OrganizadorEventos organizador = organizadorDAO.autenticar(email, contrasenia);
@@ -75,8 +77,8 @@ public class OrganizadoresController {
 		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
 	}
 	
-	@PutMapping("/updateOrganizador")
-	public ResponseEntity<OrganizadorEventos> updateOrganizador(@RequestParam int id, @RequestHeader String token, @RequestBody OrganizadorEventos organizadorNuevo){
+	@PutMapping("/{id}")
+	public ResponseEntity<OrganizadorEventos> updateOrganizador(@PathVariable("id") int id, @RequestHeader String token, @RequestBody OrganizadorEventos organizadorNuevo){
 		if (token.equals(id+"123456")) {
 			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
 			if (organizador != null) {
@@ -93,8 +95,8 @@ public class OrganizadoresController {
 		return new ResponseEntity<OrganizadorEventos>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@GetMapping("/getOrganizador")
-	public ResponseEntity<OrganizadorEventos> getOrganizador(@RequestParam int id, @RequestHeader String token){
+	@GetMapping("/{id}")
+	public ResponseEntity<OrganizadorEventos> getOrganizador(@PathVariable("id") int id, @RequestHeader String token){
 		if (token.equals(id+"123456")) {
 			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
 			if (organizador != null) {
