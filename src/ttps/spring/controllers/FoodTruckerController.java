@@ -35,7 +35,8 @@ public class FoodTruckerController {
 	
 	
 	//GET
-	@GetMapping("/listAllFoodTruckers")
+	//@GetMapping("/listAllFoodTruckers")
+	@GetMapping
 	public ResponseEntity<List<FoodTrucker>>listAllFoodTruckers(@RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
 			List<FoodTrucker> foodTruckers = foodTruckerDAO.recuperarTodos("email");
@@ -51,7 +52,7 @@ public class FoodTruckerController {
 	
 	
 	//POST
-	@PostMapping("/createUser")
+	@PostMapping
 	public ResponseEntity<FoodTrucker> createUser(@RequestBody FoodTrucker foodTrucker){
 		if (foodTruckerDAO.ConEmail(foodTrucker.getEmail()) == null) {
 			foodTruckerDAO.persistir(foodTrucker);
@@ -62,7 +63,7 @@ public class FoodTruckerController {
 		return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.CONFLICT);
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/autenticacion")
 	public ResponseEntity<String> login(@RequestHeader String email, @RequestHeader String contrasenia){
 		if (foodTruckerDAO.ConEmail(email) != null) {
 			FoodTrucker foodTrucker = foodTruckerDAO.autenticar(email, contrasenia);
@@ -76,8 +77,8 @@ public class FoodTruckerController {
 		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
 	}
 	
-	@GetMapping("/getFoodTrucker")
-	public ResponseEntity<FoodTrucker> getFoodTrucker(@RequestParam int id, @RequestHeader String token){
+	@GetMapping("/{id}")
+	public ResponseEntity<FoodTrucker> getFoodTrucker(@PathVariable("id") int id, @RequestHeader String token){
 		if (token.equals(id+"123456")) {
 			FoodTrucker foodTrucker = foodTruckerDAO.recuperar(id);
 			if (foodTrucker != null) {
@@ -88,8 +89,8 @@ public class FoodTruckerController {
 		return new ResponseEntity<FoodTrucker>(HttpStatus.UNAUTHORIZED);
 	}
 	
-	@PutMapping("/updateFoodTrucker")
-	public ResponseEntity<FoodTrucker> updateFoodTrucker(@RequestParam int id, @RequestHeader String token, @RequestBody FoodTrucker foodTruckerNuevo){
+	@PutMapping("/{id}")
+	public ResponseEntity<FoodTrucker> updateFoodTrucker(@PathVariable("id") int id, @RequestHeader String token, @RequestBody FoodTrucker foodTruckerNuevo){
 		if (token.equals(id+"123456")) {
 			FoodTrucker foodTrucker = foodTruckerDAO.recuperar(id);
 			if (foodTrucker != null) {
