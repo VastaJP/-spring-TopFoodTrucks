@@ -88,7 +88,7 @@ public class OrganizadoresController {
 				organizador.setContrasenia(organizadorNuevo.getContrasenia());
 				organizadorDAO.actualizar(organizador);
 				organizador = organizadorDAO.recuperar(id);
-				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
+				return new ResponseEntity<OrganizadorEventos>(HttpStatus.OK);
 			}
 			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);
 		}

@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "foodtruckers")
 public class FoodTrucker extends Usuario{
 
-	@JsonManagedReference
+	@JsonManagedReference(value = "foodTruckFT")
 	@OneToOne(mappedBy = "foodtrucker", optional = true)
 	private FoodTruck foodTruck;
 	

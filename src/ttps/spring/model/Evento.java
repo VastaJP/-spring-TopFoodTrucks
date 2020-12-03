@@ -49,12 +49,12 @@ public class Evento {
 	@Column(name = "telefono")
 	private String telefono;
 	
-	@JsonBackReference
-	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonBackReference(value = "organizadorE")
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idOrganizador")
 	private OrganizadorEventos organizador;
 	
-	@JsonManagedReference
+	@JsonManagedReference(value = "reservasE")
 	@OneToMany(mappedBy = "evento")
 	private List<Reserva> reservas;
 	

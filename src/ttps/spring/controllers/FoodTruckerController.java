@@ -100,7 +100,7 @@ public class FoodTruckerController {
 				foodTrucker.setContrasenia(foodTruckerNuevo.getContrasenia());
 				foodTruckerDAO.actualizar(foodTrucker);
 				foodTrucker = foodTruckerDAO.recuperar(id);
-				return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.OK);
+				return new ResponseEntity<FoodTrucker>(HttpStatus.OK);
 			}
 			return new ResponseEntity<FoodTrucker>(HttpStatus.NOT_FOUND);
 		}

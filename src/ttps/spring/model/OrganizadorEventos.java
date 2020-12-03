@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name= "organizadores")
@@ -14,7 +15,7 @@ public class OrganizadorEventos extends Usuario{
 	}
 	
 	@OneToMany(mappedBy = "organizador")
-	@JsonIgnore
+	@JsonManagedReference(value = "organizadorE")
 	private List<Evento> eventos;
 	
 	public OrganizadorEventos(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,
