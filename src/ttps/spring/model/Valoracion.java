@@ -2,6 +2,7 @@ package ttps.spring.model;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
@@ -30,7 +31,7 @@ public class Valoracion {
 	@Column(name = "disenio")
 	private Integer disenio;
 	
-	@JsonManagedReference(value = "valoracionR")
+	@JsonBackReference(value = "valoracionR")
 	@OneToOne(mappedBy = "valoracion")
 	private Reserva reserva;
 	

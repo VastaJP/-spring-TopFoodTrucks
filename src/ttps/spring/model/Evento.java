@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "eventos")
 public class Evento {
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id @GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "idEvento")
 	private Integer idEvento;
 	
@@ -54,7 +54,7 @@ public class Evento {
 	@JoinColumn(name = "idOrganizador")
 	private OrganizadorEventos organizador;
 	
-	@JsonManagedReference(value = "reservasE")
+	@JsonBackReference(value = "reservasE")
 	@OneToMany(mappedBy = "evento")
 	private List<Reserva> reservas;
 	

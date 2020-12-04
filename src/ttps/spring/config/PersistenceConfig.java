@@ -55,6 +55,7 @@ public class PersistenceConfig {
 		Properties properties = new Properties();		
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
+		properties.setProperty("hibernate.enable_lazy_load_no_trans", "false");
 		//properties.setProperty("hibernate.default_schema", "prueba");
 		return properties;
 	}

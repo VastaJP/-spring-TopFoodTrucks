@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,8 +39,6 @@ public class OrganizadoresController {
 		ctx.close();
 	}
 	
-	
-	//@GetMapping("/listAllOrganizadores")
 	@GetMapping
 	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.contentEquals(idUsuario+"123456")) {
@@ -95,11 +94,13 @@ public class OrganizadoresController {
 		return new ResponseEntity<OrganizadorEventos>(HttpStatus.UNAUTHORIZED);
 	}
 	
+	@Transactional
 	@GetMapping("/{id}")
 	public ResponseEntity<OrganizadorEventos> getOrganizador(@PathVariable("id") int id, @RequestHeader String token){
 		if (token.equals(id+"123456")) {
 			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
 			if (organizador != null) {
+				System.out.println(organizador.getEventos());
 				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
 			}
 			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);

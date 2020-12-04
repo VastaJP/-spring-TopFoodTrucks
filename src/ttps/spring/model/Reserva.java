@@ -3,13 +3,15 @@ package ttps.spring.model;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name= "reservas")
 public class Reserva {
 
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "idReserva")
 	private Integer idReserva;
 	
@@ -17,6 +19,10 @@ public class Reserva {
 	private String estado;
 	
 	@JsonBackReference(value = "reservasE")
+	/*
+	 * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
+	 * property = "idReserva" )
+	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idEvento")
 	private Evento evento;

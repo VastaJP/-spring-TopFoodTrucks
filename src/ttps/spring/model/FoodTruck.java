@@ -5,13 +5,15 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "foodtrucks")
 public class FoodTruck {
 
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "idFoodTruck")
 	private Integer idFoodTruck;
 	
@@ -38,15 +40,19 @@ public class FoodTruck {
 	
 	//Back->owner / Managed->no owner
 	@JsonBackReference(value = "foodTruckFT")
-	@OneToOne(optional = false, fetch = FetchType.LAZY)
+	@OneToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "foodtrucker_idUsuario")
 	private FoodTrucker foodtrucker;
 	
-	@JsonManagedReference(value = "reservasFT")
+	@JsonBackReference(value = "reservasFT")
+	/*
+	 * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
+	 * property = "idFoodTruck" )
+	 */
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Reserva> reservas;
 	
-	@JsonManagedReference(value = "foodTruckI")
+	@JsonBackReference(value = "foodTruckI")
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Imagen> imagen;
 	

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,10 +64,12 @@ public class FoodTruckController {
 		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);	
 	}
 	
+	@Transactional
 	@GetMapping("/{id}")
 	public ResponseEntity<FoodTruck> getFoodTruck(@PathVariable("id") int id, @RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
 			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
+			//FoodTruck foodtruck = foodTruckDAO.recuperar(id);
 			return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
 		}
 		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);
