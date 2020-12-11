@@ -1,5 +1,6 @@
 package ttps.spring.controllers;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.introspect.AnnotatedMember;
+import com.fasterxml.jackson.databind.ser.BeanSerializer;
+import com.fasterxml.jackson.databind.ser.std.BeanSerializerBase;
+import com.fasterxml.jackson.databind.ser.std.JsonValueSerializer;
 
 import ttps.spring.config.PersistenceConfig;
 import ttps.spring.interfacesDAO.FoodTruckDAO;
@@ -68,12 +78,12 @@ public class FoodTruckController {
 	@GetMapping("/{id}")
 	public ResponseEntity<FoodTruck> getFoodTruck(@PathVariable("id") int id, @RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
-			FoodTruck foodtruck = foodTruckDAO.getFoodTruck(id);
-			//FoodTruck foodtruck = foodTruckDAO.recuperar(id);
+			FoodTruck foodtruck = foodTruckDAO.recuperar(id);
 			return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
 		}
 		return new ResponseEntity<FoodTruck>(HttpStatus.UNAUTHORIZED);
 	}
+	
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<FoodTruck> updateFoodTruck(@PathVariable("id") int id, @RequestBody FoodTruck foodtrucknuevo, @RequestHeader String token, @RequestHeader int idUsuario){
@@ -89,6 +99,7 @@ public class FoodTruckController {
 				foodtruck.setWhatsapp(foodtrucknuevo.getWhatsapp());
 				foodTruckDAO.actualizar(foodtruck);
 				foodtruck = foodTruckDAO.getFoodTruck(id);
+				Hibernate.initialize(foodtruck.getImagen());
 				return new ResponseEntity<FoodTruck>(foodtruck, HttpStatus.OK);
 			}
 			return new ResponseEntity<FoodTruck>(HttpStatus.NOT_FOUND);

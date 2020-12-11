@@ -25,12 +25,6 @@ public class FoodTruckDAOHibernateJPA extends GenericDAOHibernateJPA<FoodTruck> 
 	}
 
 	@Override
-	public FoodTruck recuperar(Serializable id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public FoodTruck getFoodTruck(int id) {
 		Query consulta = this.getEntityManager().createQuery(""
 				+ "SELECT ft FROM "+ getPersistentClass().getSimpleName()+" ft WHERE ft.idFoodTruck = '"+id+"'");

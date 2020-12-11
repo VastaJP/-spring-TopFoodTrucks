@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ttps.spring.config.PersistenceConfig;
 import ttps.spring.interfacesDAO.OrganizadorEventosDAO;
+import ttps.spring.model.Evento;
 import ttps.spring.model.OrganizadorEventos;
 
 @RestController
@@ -39,15 +40,20 @@ public class OrganizadoresController {
 		ctx.close();
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @RequestHeader int idUsuario){
+	@Transactional
+	@GetMapping("/{id}")
+	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @PathVariable int idUsuario){
 		if (token.contentEquals(idUsuario+"123456")) {
 			List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
 			if (organizadores.isEmpty()) {
 				return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.NO_CONTENT);
 			}
-			Hibernate.initialize(organizadores);
-			System.out.println(Hibernate.isInitialized(organizadores));
+			for (OrganizadorEventos organizadorEventos : organizadores) {
+				for (Evento evento : organizadorEventos.getEventos()) {
+					Hibernate.initialize(evento);
+					System.out.println(evento.getNombreEvento());
+				}
+			}
 			return new ResponseEntity<List<OrganizadorEventos>>(organizadores,HttpStatus.OK);
 		}
 		return new ResponseEntity<List<OrganizadorEventos>>(HttpStatus.UNAUTHORIZED);
@@ -101,6 +107,7 @@ public class OrganizadoresController {
 			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
 			if (organizador != null) {
 				System.out.println(organizador.getEventos());
+				Hibernate.initialize(organizador);
 				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
 			}
 			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);
