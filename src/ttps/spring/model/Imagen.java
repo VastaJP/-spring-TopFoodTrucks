@@ -19,7 +19,7 @@ public class Imagen {
 	@Column(name = "path")
 	private String path;
 	
-	@JsonManagedReference(value = "foodTruckI")
+	@JsonBackReference(value = "foodTruckI")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
 	private FoodTruck foodTruck;

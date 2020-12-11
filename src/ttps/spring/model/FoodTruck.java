@@ -45,14 +45,10 @@ public class FoodTruck {
 	private FoodTrucker foodtrucker;
 	
 	@JsonBackReference(value = "reservasFT")
-	/*
-	 * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
-	 * property = "idFoodTruck" )
-	 */
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Reserva> reservas;
 	
-	@JsonBackReference(value = "foodTruckI")
+	@JsonManagedReference(value = "foodTruckI")
 	@OneToMany(mappedBy = "foodTruck")
 	private List<Imagen> imagen;
 	
