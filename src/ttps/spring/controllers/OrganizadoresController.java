@@ -41,7 +41,7 @@ public class OrganizadoresController {
 	}
 	
 	@Transactional
-	@GetMapping("/{id}")
+	@GetMapping("/listAll/{id}")
 	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @PathVariable int idUsuario){
 		if (token.contentEquals(idUsuario+"123456")) {
 			List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
