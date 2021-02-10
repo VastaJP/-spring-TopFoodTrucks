@@ -16,9 +16,9 @@ public class FoodTrucker extends Usuario{
 	public FoodTrucker() {
 	}
 	
-	public FoodTrucker(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,
+	public FoodTrucker(String email, String contrasenia, String nombre, String apellido,
 			FoodTruck foodTruck) {
-		super(idUsuario, email, contrasenia, nombre, apellido);
+		super(email, contrasenia, nombre, apellido);
 		this.foodTruck = foodTruck;
 	}
 

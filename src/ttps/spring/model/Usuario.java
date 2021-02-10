@@ -15,7 +15,8 @@ public abstract class Usuario {
 	public Usuario() {
 	}
 	
-	@Id@GeneratedValue(strategy = GenerationType.TABLE)
+	@Id
+	//@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "idUsuario")
 	private Integer idUsuario;
 	
@@ -31,9 +32,8 @@ public abstract class Usuario {
 	@Column(name = "apellido")
 	private String apellido;
 	
-	public Usuario(Integer idUsuario, String email, String contrasenia, String nombre, String apellido) {
+	public Usuario(String email, String contrasenia, String nombre, String apellido) {
 		super();
-		this.idUsuario = idUsuario;
 		this.email = email;
 		this.contrasenia = contrasenia;
 		this.nombre = nombre;

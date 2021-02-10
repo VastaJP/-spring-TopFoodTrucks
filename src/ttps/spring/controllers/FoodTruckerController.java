@@ -52,6 +52,7 @@ public class FoodTruckerController {
 	
 	
 	//POST
+	@CrossOrigin(origins = "*")
 	@PostMapping
 	public ResponseEntity<FoodTrucker> createUser(@RequestBody FoodTrucker foodTrucker){
 		if (foodTruckerDAO.ConEmail(foodTrucker.getEmail()) == null) {
@@ -60,6 +61,7 @@ public class FoodTruckerController {
 			return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.CREATED);
 		}
 		System.out.println("Usuario existente");
+		foodTrucker = null;
 		return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.CONFLICT);
 	}
 

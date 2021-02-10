@@ -19,9 +19,9 @@ public class OrganizadorEventos extends Usuario{
 	@JsonManagedReference(value = "organizadorE")
 	private List<Evento> eventos;
 	
-	public OrganizadorEventos(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,
+	public OrganizadorEventos(String email, String contrasenia, String nombre, String apellido,
 			List<Evento> eventos) {
-		super(idUsuario, email, contrasenia, nombre, apellido);
+		super(email, contrasenia, nombre, apellido);
 		this.eventos = eventos;
 	}
 
