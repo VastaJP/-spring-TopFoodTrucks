@@ -18,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/FoodTrucker", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FoodTruckerController {
 	
@@ -35,7 +36,6 @@ public class FoodTruckerController {
 	
 	
 	//GET
-	//@GetMapping("/listAllFoodTruckers")
 	@GetMapping
 	public ResponseEntity<List<FoodTrucker>>listAllFoodTruckers(@RequestHeader String token, @RequestHeader int idUsuario){
 		if (token.equals(idUsuario+"123456")) {
@@ -52,7 +52,7 @@ public class FoodTruckerController {
 	
 	
 	//POST
-	@CrossOrigin(origins = "*")
+	
 	@PostMapping
 	public ResponseEntity<FoodTrucker> createUser(@RequestBody FoodTrucker foodTrucker){
 		if (foodTruckerDAO.ConEmail(foodTrucker.getEmail()) == null) {

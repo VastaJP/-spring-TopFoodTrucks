@@ -16,7 +16,7 @@ public abstract class Usuario {
 	}
 	
 	@Id
-	//@GeneratedValue(strategy = GenerationType.TABLE)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "idUsuario")
 	private Integer idUsuario;
 	

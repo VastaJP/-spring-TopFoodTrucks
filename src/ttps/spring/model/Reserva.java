@@ -11,24 +11,17 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 @Table(name= "reservas")
 public class Reserva {
 
-	@Id@GeneratedValue(strategy = GenerationType.TABLE)
+	@Id@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "idReserva")
 	private Integer idReserva;
 	
 	@Column(name = "estado")
 	private String estado;
 	
-	@JsonBackReference(value = "reservasE")
-	/*
-	 * @JsonIdentityInfo( generator = ObjectIdGenerators.PropertyGenerator.class,
-	 * property = "idReserva" )
-	 */
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idEvento")
 	private Evento evento;
 	
-	
-	@JsonBackReference(value = "reservasFT")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
 	private FoodTruck foodTruck;

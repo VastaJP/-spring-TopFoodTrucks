@@ -49,14 +49,9 @@ public class Evento {
 	@Column(name = "telefono")
 	private String telefono;
 	
-	@JsonBackReference(value = "organizadorE")
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idOrganizador")
 	private OrganizadorEventos organizador;
-	
-	@JsonBackReference(value = "reservasE")
-	@OneToMany(mappedBy = "evento")
-	private List<Reserva> reservas;
 	
 	public Evento() {
 		super();
@@ -78,16 +73,8 @@ public class Evento {
 		this.fechaYHora = fechaYHora;
 		this.codigoPostal = codigoPostal;
 		this.telefono = telefono;
-		this.organizador = organizador;
-		this.reservas = reservas;
 	}
 	
-	public List<Reserva> getReservas() {
-		return reservas;
-	}
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
-	}
 	public String getNombreEvento() {
 		return nombreEvento;
 	}
@@ -159,12 +146,6 @@ public class Evento {
 	}
 	public void setIdEvento(Integer idEvento) {
 		this.idEvento = idEvento;
-	}
-	public OrganizadorEventos getOrganizador() {
-		return organizador;
-	}
-	public void setOrganizador(OrganizadorEventos organizador) {
-		this.organizador = organizador;
 	}
 	
 }
