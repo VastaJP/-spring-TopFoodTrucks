@@ -1,4 +1,4 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
 import java.util.List;
 
@@ -6,14 +6,12 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "foodtrucks")
-public class FoodTruck {
+public class FoodTruckAux {
 
 	@Id@GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "idFoodTruck")
@@ -41,26 +39,25 @@ public class FoodTruck {
 	private String twitter;
 	
 	//Back->owner / Managed->no owner
-	//@JsonBackReference(value = "foodTruckFT")
-	@JsonIgnore
+	@JsonBackReference(value = "foodTruckFT")
 	@OneToOne(optional = false, fetch = FetchType.EAGER)
-	//@JoinColumn(name = "foodtrucker_idUsuario")
-	private FoodTrucker foodtrucker;
+	@JoinColumn(name = "foodtrucker_idUsuario")
+	private FoodTruckerAux foodtrucker;
 	
 	@JsonBackReference(value = "reservasFT")
 	@OneToMany(mappedBy = "foodTruck")
-	private List<Reserva> reservas;
+	private List<ReservaAux> reservaAuxs;
 	
 	@JsonManagedReference(value = "foodTruckI")
-	@OneToMany(mappedBy = "foodTruck", fetch = FetchType.EAGER)
-	private List<Imagen> imagenes;
+	@OneToMany(mappedBy = "foodTruck")
+	private List<ImagenAux> imagenAux;
 	
-	public FoodTruck() {
+	public FoodTruckAux() {
 	}
 	
-	public FoodTruck(Integer idFoodTruck, Integer idUsuario, Integer whatsapp, String nombre, String servicio,
-			String descripcion, String website, String instagram, String twitter, FoodTrucker foodtrucker,
-			List<Reserva> reservas, List<Imagen> imagen) {
+	public FoodTruckAux(Integer idFoodTruck, Integer idUsuario, Integer whatsapp, String nombre, String servicio,
+			String descripcion, String website, String instagram, String twitter, FoodTruckerAux foodtrucker,
+			List<ReservaAux> reservaAuxs, List<ImagenAux> imagenAux) {
 		this.idFoodTruck = idFoodTruck;
 		this.whatsapp = whatsapp;
 		this.nombre = nombre;
@@ -70,8 +67,8 @@ public class FoodTruck {
 		this.instagram = instagram;
 		this.twitter = twitter;
 		this.foodtrucker = foodtrucker;
-		this.reservas = reservas;
-		this.imagenes = imagen;
+		this.reservaAuxs = reservaAuxs;
+		this.imagenAux = imagenAux;
 	}
 	
 	public Integer getWhatsapp() {
@@ -82,28 +79,28 @@ public class FoodTruck {
 		this.whatsapp = whatsapp;
 	}
 
-	public FoodTrucker getFoodtrucker() {
+	public FoodTruckerAux getFoodtrucker() {
 		return foodtrucker;
 	}
 
-	public void setFoodtrucker(FoodTrucker foodtrucker) {
+	public void setFoodtrucker(FoodTruckerAux foodtrucker) {
 		this.foodtrucker = foodtrucker;
 	}
 
-	public List<Reserva> getReservas() {
-		return reservas;
+	public List<ReservaAux> getReservas() {
+		return reservaAuxs;
 	}
 
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
+	public void setReservas(List<ReservaAux> reservaAuxs) {
+		this.reservaAuxs = reservaAuxs;
 	}
 
-	public List<Imagen> getImagen() {
-		return imagenes;
+	public List<ImagenAux> getImagen() {
+		return imagenAux;
 	}
 
-	public void setImagen(List<Imagen> imagen) {
-		this.imagenes = imagen;
+	public void setImagen(List<ImagenAux> imagenAux) {
+		this.imagenAux = imagenAux;
 	}
 
 	public Integer getIdFoodTruck() {

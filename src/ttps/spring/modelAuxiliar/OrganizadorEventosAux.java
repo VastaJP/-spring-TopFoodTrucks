@@ -1,16 +1,19 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
+
+import java.util.List;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "foodtruckers")
-public class FoodTrucker{
-
-	@OneToOne(mappedBy = "foodtrucker", optional = true)
-	private FoodTruck foodTruck;
+@Table(name= "organizadores")
+public class OrganizadorEventosAux{
+	
+	public OrganizadorEventosAux() {
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,21 +32,19 @@ public class FoodTrucker{
 	@Column(name = "apellido")
 	private String apellido;
 	
-	public FoodTrucker() {
-	}
+	@OneToMany(mappedBy = "organizador")
+	private List<EventoAux> eventoAuxs;
 
-	public FoodTrucker(FoodTruck foodTruck, Integer idUsuario, String email, String contrasenia, String nombre,
-			String apellido) {
+	public OrganizadorEventosAux(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,
+			List<EventoAux> eventoAuxs) {
 		super();
-		this.foodTruck = foodTruck;
 		this.idUsuario = idUsuario;
 		this.email = email;
 		this.contrasenia = contrasenia;
 		this.nombre = nombre;
 		this.apellido = apellido;
+		this.eventoAuxs = eventoAuxs;
 	}
-
-
 
 	public Integer getIdUsuario() {
 		return idUsuario;
@@ -85,12 +86,12 @@ public class FoodTrucker{
 		this.apellido = apellido;
 	}
 
-	public FoodTruck getFoodTruck() {
-		return foodTruck;
+	public List<EventoAux> getEventos() {
+		return eventoAuxs;
 	}
-	
-	public void setFoodTruck(FoodTruck foodTruck) {
-		this.foodTruck = foodTruck;
+
+	public void setEventos(List<EventoAux> eventoAuxs) {
+		this.eventoAuxs = eventoAuxs;
 	}
 	
 }

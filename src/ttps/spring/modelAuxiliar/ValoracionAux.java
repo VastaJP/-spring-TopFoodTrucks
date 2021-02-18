@@ -1,16 +1,15 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "Valoracion")
-public class Valoracion {
+public class ValoracionAux {
 	
-	public Valoracion() {
+	public ValoracionAux() {
 	}
 
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,20 +31,19 @@ public class Valoracion {
 	@Column(name = "disenio")
 	private Integer disenio;
 	
-	@JsonIgnore
 	@JsonBackReference(value = "valoracionR")
 	@OneToOne(mappedBy = "valoracion")
-	private Reserva reserva;
+	private ReservaAux reservaAux;
 	
-	public Valoracion(Integer idValoracion, Integer limpieza, Integer simpatia, Integer calidadPrecio, Integer sabor,
-			Integer disenio, Reserva reserva) {
+	public ValoracionAux(Integer idValoracion, Integer limpieza, Integer simpatia, Integer calidadPrecio, Integer sabor,
+			Integer disenio, ReservaAux reservaAux) {
 		this.idValoracion = idValoracion;
 		this.limpieza = limpieza;
 		this.simpatia = simpatia;
 		this.calidadPrecio = calidadPrecio;
 		this.sabor = sabor;
 		this.disenio = disenio;
-		this.reserva = reserva;
+		this.reservaAux = reservaAux;
 	}
 
 	public Integer getLimpieza() {

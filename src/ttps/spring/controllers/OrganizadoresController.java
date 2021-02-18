@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +26,7 @@ import ttps.spring.model.Evento;
 import ttps.spring.model.OrganizadorEventos;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/Organizador", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrganizadoresController {
 	
@@ -42,7 +44,7 @@ public class OrganizadoresController {
 	
 	@Transactional
 	@GetMapping("/listAll/{id}")
-	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@RequestHeader String token, @PathVariable int idUsuario){
+	public ResponseEntity<List<OrganizadorEventos>> listAllOrganizadores(@PathVariable String idUsuario, @RequestHeader String token){
 		if (token.contentEquals(idUsuario+"123456")) {
 			List<OrganizadorEventos> organizadores = organizadorDAO.recuperarTodos("email");
 			if (organizadores.isEmpty()) {
@@ -68,18 +70,19 @@ public class OrganizadoresController {
 		return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.CONFLICT);
 	}
 	
+	@CrossOrigin(origins = "*", exposedHeaders = "token")
 	@PostMapping("/autenticacion")
-	public ResponseEntity<String> login(@RequestHeader String email, @RequestHeader String contrasenia){
+	public ResponseEntity<OrganizadorEventos> login(@RequestHeader String email, @RequestHeader String contrasenia){
 		if (organizadorDAO.ConEmail(email) != null) {
 			OrganizadorEventos organizador = organizadorDAO.autenticar(email, contrasenia);
 			if (organizador != null) {
 				HttpHeaders header = new HttpHeaders();
 				header.set("token", organizador.getIdUsuario()+"123456");
-				return new ResponseEntity<String>(header,HttpStatus.OK);
+				return new ResponseEntity<OrganizadorEventos>(organizador,header,HttpStatus.OK);
 			}
-			return new ResponseEntity<String>("Contrase�a incorrecta",HttpStatus.FORBIDDEN);
+			return new ResponseEntity<OrganizadorEventos>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
+		return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);
 	}
 	
 	@PutMapping("/{id}")
@@ -101,13 +104,12 @@ public class OrganizadoresController {
 	}
 	
 	@Transactional
-	@GetMapping("/{id}")
+	@GetMapping("{id}")
 	public ResponseEntity<OrganizadorEventos> getOrganizador(@PathVariable("id") int id, @RequestHeader String token){
-		if (token.equals(id+"123456")) {
+		if (token.equals(String.valueOf(id)+"123456")) {
 			OrganizadorEventos organizador = organizadorDAO.recuperar(id);
 			if (organizador != null) {
-				System.out.println(organizador.getEventos());
-				Hibernate.initialize(organizador);
+				//Hibernate.initialize(organizador);
 				return new ResponseEntity<OrganizadorEventos>(organizador,HttpStatus.OK);
 			}
 			return new ResponseEntity<OrganizadorEventos>(HttpStatus.NOT_FOUND);

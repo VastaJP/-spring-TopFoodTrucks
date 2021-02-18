@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ import ttps.spring.model.FoodTruck;
 import ttps.spring.model.FoodTrucker;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/FoodTruck", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FoodTruckController {
 	

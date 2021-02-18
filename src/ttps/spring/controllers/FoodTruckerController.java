@@ -10,15 +10,17 @@ import ttps.spring.model.FoodTrucker;
 import java.io.IOException;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 @RestController
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 @RequestMapping(value = "/FoodTrucker", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FoodTruckerController {
 	
@@ -36,8 +38,8 @@ public class FoodTruckerController {
 	
 	
 	//GET
-	@GetMapping
-	public ResponseEntity<List<FoodTrucker>>listAllFoodTruckers(@RequestHeader String token, @RequestHeader int idUsuario){
+	@GetMapping("/listAll/{idUsuario}")
+	public ResponseEntity<List<FoodTrucker>>listAllFoodTruckers(@RequestHeader String token, @PathVariable String idUsuario){
 		if (token.equals(idUsuario+"123456")) {
 			List<FoodTrucker> foodTruckers = foodTruckerDAO.recuperarTodos("email");
 			if (foodTruckers.isEmpty()) {
@@ -65,25 +67,28 @@ public class FoodTruckerController {
 		return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.CONFLICT);
 	}
 
+	@CrossOrigin(origins = "*", exposedHeaders = "token")
 	@PostMapping("/autenticacion")
-	public ResponseEntity<String> login(@RequestHeader String email, @RequestHeader String contrasenia){
+	public ResponseEntity<FoodTrucker> login(@RequestHeader String email, @RequestHeader String contrasenia){
 		if (foodTruckerDAO.ConEmail(email) != null) {
 			FoodTrucker foodTrucker = foodTruckerDAO.autenticar(email, contrasenia);
 			if (foodTrucker != null) {
 				HttpHeaders header = new HttpHeaders();
 				header.set("token", foodTrucker.getIdUsuario()+"123456");
-				return new ResponseEntity<String>(header,HttpStatus.OK);
+				return new ResponseEntity<FoodTrucker>(foodTrucker, header, HttpStatus.OK);
 			}
-			return new ResponseEntity<String>("Contrase�a incorrecta",HttpStatus.FORBIDDEN);
+			return new ResponseEntity<FoodTrucker>(HttpStatus.FORBIDDEN);
 		}
-		return new ResponseEntity<String>("Email incorrecto",HttpStatus.NO_CONTENT);
+		return new ResponseEntity<FoodTrucker>(HttpStatus.NOT_FOUND);
 	}
 	
-	@GetMapping("/{id}")
+	@Transactional
+	@GetMapping("{id}")
 	public ResponseEntity<FoodTrucker> getFoodTrucker(@PathVariable("id") int id, @RequestHeader String token){
-		if (token.equals(id+"123456")) {
+		if (token.equals(String.valueOf(id)+"123456")) {
 			FoodTrucker foodTrucker = foodTruckerDAO.recuperar(id);
 			if (foodTrucker != null) {
+				Hibernate.initialize(foodTrucker.getFoodTruck());
 				return new ResponseEntity<FoodTrucker>(foodTrucker,HttpStatus.OK);
 			}
 			return new ResponseEntity<FoodTrucker>(HttpStatus.NOT_FOUND);

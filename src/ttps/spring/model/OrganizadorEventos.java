@@ -32,7 +32,7 @@ public class OrganizadorEventos{
 	@Column(name = "apellido")
 	private String apellido;
 	
-	@OneToMany(mappedBy = "organizador")
+	@OneToMany(mappedBy = "organizador", fetch = FetchType.EAGER)
 	private List<Evento> eventos;
 
 	public OrganizadorEventos(Integer idUsuario, String email, String contrasenia, String nombre, String apellido,

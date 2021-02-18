@@ -1,16 +1,19 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
-import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 @Entity
-@Table(name = "foodtruckers")
-public class FoodTrucker{
-
-	@OneToOne(mappedBy = "foodtrucker", optional = true)
-	private FoodTruck foodTruck;
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class UsuarioAux {
+	
+	public UsuarioAux() {
+	}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,21 +32,13 @@ public class FoodTrucker{
 	@Column(name = "apellido")
 	private String apellido;
 	
-	public FoodTrucker() {
-	}
-
-	public FoodTrucker(FoodTruck foodTruck, Integer idUsuario, String email, String contrasenia, String nombre,
-			String apellido) {
+	public UsuarioAux(String email, String contrasenia, String nombre, String apellido) {
 		super();
-		this.foodTruck = foodTruck;
-		this.idUsuario = idUsuario;
 		this.email = email;
 		this.contrasenia = contrasenia;
 		this.nombre = nombre;
 		this.apellido = apellido;
 	}
-
-
 
 	public Integer getIdUsuario() {
 		return idUsuario;
@@ -84,13 +79,4 @@ public class FoodTrucker{
 	public void setApellido(String apellido) {
 		this.apellido = apellido;
 	}
-
-	public FoodTruck getFoodTruck() {
-		return foodTruck;
-	}
-	
-	public void setFoodTruck(FoodTruck foodTruck) {
-		this.foodTruck = foodTruck;
-	}
-	
 }

@@ -1,16 +1,15 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name= "reservas")
-public class Reserva {
+public class ReservaAux {
 
 	@Id@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "idReserva")
@@ -19,54 +18,52 @@ public class Reserva {
 	@Column(name = "estado")
 	private String estado;
 	
-	@JsonIgnore
-	@ManyToOne(optional = false)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idEvento")
-	private Evento evento;
+	private EventoAux eventoAux;
 	
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
-	private FoodTruck foodTruck;
+	private FoodTruckAux foodTruckAux;
 	
 	@JsonBackReference(value = "valoracionR")
 	@OneToOne(fetch = FetchType.EAGER,optional = true)
 	@JoinColumn(name = "idValoracion")
-	private Valoracion valoracion;
+	private ValoracionAux valoracionAux;
 	
-	public Reserva() {
+	public ReservaAux() {
 	}
 	
-	public Reserva(Integer idReserva, String estado, Evento evento, FoodTruck foodTruck, Valoracion valoracion) {
+	public ReservaAux(Integer idReserva, String estado, EventoAux eventoAux, FoodTruckAux foodTruckAux, ValoracionAux valoracionAux) {
 		this.idReserva = idReserva;
 		this.estado = estado;
-		this.evento = evento;
-		this.foodTruck = foodTruck;
-		this.valoracion = valoracion;
+		this.eventoAux = eventoAux;
+		this.foodTruckAux = foodTruckAux;
+		this.valoracionAux = valoracionAux;
 	}
 
-	public Evento getEvento() {
-		return evento;
+	public EventoAux getEvento() {
+		return eventoAux;
 	}
 
-	public void setEvento(Evento evento) {
-		this.evento = evento;
+	public void setEvento(EventoAux eventoAux) {
+		this.eventoAux = eventoAux;
 	}
 
-	public FoodTruck getFoodTruck() {
-		return foodTruck;
+	public FoodTruckAux getFoodTruck() {
+		return foodTruckAux;
 	}
 
-	public void setFoodTruck(FoodTruck foodTruck) {
-		this.foodTruck = foodTruck;
+	public void setFoodTruck(FoodTruckAux foodTruckAux) {
+		this.foodTruckAux = foodTruckAux;
 	}
 
-	public Valoracion getValoracion() {
-		return valoracion;
+	public ValoracionAux getValoracion() {
+		return valoracionAux;
 	}
 
-	public void setValoracion(Valoracion valoracion) {
-		this.valoracion = valoracion;
+	public void setValoracion(ValoracionAux valoracionAux) {
+		this.valoracionAux = valoracionAux;
 	}
 
 	public Integer getIdReserva() {

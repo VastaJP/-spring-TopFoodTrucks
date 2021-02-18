@@ -1,16 +1,15 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "imagenes")
-public class Imagen {
+public class ImagenAux {
 	
-	public Imagen() {
+	public ImagenAux() {
 	}
 
 	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,17 +19,16 @@ public class Imagen {
 	@Column(name = "path")
 	private String path;
 	
-	@JsonIgnore
-	//@JsonBackReference(value = "foodTruckI")
-	@ManyToOne(optional = false)
+	@JsonBackReference(value = "foodTruckI")
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idFoodTruck")
-	private FoodTruck foodTruck;
+	private FoodTruckAux foodTruckAux;
 
-	public Imagen(Integer idImagen, String path, FoodTruck foodTruck) {
+	public ImagenAux(Integer idImagen, String path, FoodTruckAux foodTruckAux) {
 		super();
 		this.idImagen = idImagen;
 		this.path = path;
-		this.foodTruck = foodTruck;
+		this.foodTruckAux = foodTruckAux;
 	}
 
 	
@@ -47,14 +45,14 @@ public class Imagen {
 
 
 
-	public FoodTruck getFoodTruck() {
-		return foodTruck;
+	public FoodTruckAux getFoodTruck() {
+		return foodTruckAux;
 	}
 
 
 
-	public void setFoodTruck(FoodTruck foodTruck) {
-		this.foodTruck = foodTruck;
+	public void setFoodTruck(FoodTruckAux foodTruckAux) {
+		this.foodTruckAux = foodTruckAux;
 	}
 
 

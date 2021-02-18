@@ -1,4 +1,4 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,12 +6,11 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "eventos")
-public class Evento {
+public class EventoAux {
 	
 	@Id @GeneratedValue(strategy = GenerationType.TABLE)
 	@Column(name = "idEvento")
@@ -50,22 +49,18 @@ public class Evento {
 	@Column(name = "telefono")
 	private String telefono;
 	
-	@JsonIgnore
-	@ManyToOne(optional = true)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "idOrganizador")
-	private OrganizadorEventos organizador;
+	private OrganizadorEventosAux organizador;
 	
-	@OneToMany(mappedBy = "evento", fetch = FetchType.EAGER)
-	private List<Reserva> reservas;
-	
-	public Evento() {
+	public EventoAux() {
 		super();
 	}
 	
 	
-	public Evento(Integer idEvento, String nombreEvento, String direccion, String provincia, int pagaAsistente,
+	public EventoAux(Integer idEvento, String nombreEvento, String direccion, String provincia, int pagaAsistente,
 			String geolocalizacion, String tipoEvento, String email, String descripcion, LocalDateTime fechaYHora,
-			Integer codigoPostal, String telefono, OrganizadorEventos organizador, List<Reserva> reservas) {
+			Integer codigoPostal, String telefono, OrganizadorEventosAux organizador, List<ReservaAux> reservaAuxs) {
 		this.idEvento = idEvento;
 		this.nombreEvento = nombreEvento;
 		this.direccion = direccion;
@@ -80,27 +75,6 @@ public class Evento {
 		this.telefono = telefono;
 	}
 	
-	
-	public OrganizadorEventos getOrganizador() {
-		return organizador;
-	}
-
-
-	public void setOrganizador(OrganizadorEventos organizador) {
-		this.organizador = organizador;
-	}
-
-
-	public List<Reserva> getReservas() {
-		return reservas;
-	}
-
-
-	public void setReservas(List<Reserva> reservas) {
-		this.reservas = reservas;
-	}
-
-
 	public String getNombreEvento() {
 		return nombreEvento;
 	}

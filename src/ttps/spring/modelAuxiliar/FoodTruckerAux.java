@@ -1,4 +1,4 @@
-package ttps.spring.model;
+package ttps.spring.modelAuxiliar;
 
 import javax.persistence.*;
 
@@ -7,10 +7,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "foodtruckers")
-public class FoodTrucker{
+public class FoodTruckerAux{
 
+	@JsonManagedReference(value = "foodTruckFT")
 	@OneToOne(mappedBy = "foodtrucker", optional = true)
-	private FoodTruck foodTruck;
+	private FoodTruckAux foodTruckAux;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -29,13 +30,13 @@ public class FoodTrucker{
 	@Column(name = "apellido")
 	private String apellido;
 	
-	public FoodTrucker() {
+	public FoodTruckerAux() {
 	}
 
-	public FoodTrucker(FoodTruck foodTruck, Integer idUsuario, String email, String contrasenia, String nombre,
+	public FoodTruckerAux(FoodTruckAux foodTruckAux, Integer idUsuario, String email, String contrasenia, String nombre,
 			String apellido) {
 		super();
-		this.foodTruck = foodTruck;
+		this.foodTruckAux = foodTruckAux;
 		this.idUsuario = idUsuario;
 		this.email = email;
 		this.contrasenia = contrasenia;
@@ -85,12 +86,12 @@ public class FoodTrucker{
 		this.apellido = apellido;
 	}
 
-	public FoodTruck getFoodTruck() {
-		return foodTruck;
+	public FoodTruckAux getFoodTruck() {
+		return foodTruckAux;
 	}
 	
-	public void setFoodTruck(FoodTruck foodTruck) {
-		this.foodTruck = foodTruck;
+	public void setFoodTruck(FoodTruckAux foodTruckAux) {
+		this.foodTruckAux = foodTruckAux;
 	}
 	
 }
